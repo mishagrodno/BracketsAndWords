@@ -35,10 +35,19 @@ public class BracketAnalyzer {
                 // Current symbol
                 char currSymbol = (char) symbol;
                 // Check current symbol
+                int result = newSymbol(currSymbol);
+                // if current symbol makes bracket sequence incorrect
+                // close reader and return "incorrect"
+                if(result==-1) {
+                    bufferedReader.close();
+                    return "incorrect";
+                }
             }
             //end of reading file
             bufferedReader.close();
-            return "";
+            //if after reading file no more opening brackets bracket sequence is correct
+            if(openingBrackets.isEmpty()) return "correct";
+            else return "incorrect";
         }
         catch (Exception e){
             return "File not found";
@@ -46,6 +55,28 @@ public class BracketAnalyzer {
     }
 
 
+    // input: symbol - next character from file
+    // if symbol makes Bracket sequence incorrect return -1
+    // else return 0
 
+    private int newSymbol(char symbol){
+        if(symbol =='(' || symbol =='[' || symbol == '{'){
+            openingBrackets.push(symbol);
+        }
+        if(symbol == ')' || symbol == ']' || symbol == '}'){
+            if(openingBrackets.size()==0) return -1;
+            if(isBracketPair(openingBrackets.peek(),symbol)) openingBrackets.pop();
+            else return -1;
+        }
+        return 0;
+    }
+
+    // input: bracket1 - opening bracket from openingBrackets, bracket2 - closing bracket
+    // if brackets make pair return true
+    // else return false
+
+    private boolean isBracketPair(char bracket1, char bracket2) {
+        return (bracket1 == '(' && bracket2 == ')') || (bracket1 == '[' && bracket2 == ']') || (bracket1 == '{' && bracket2 == '}');
+    }
 }
 
