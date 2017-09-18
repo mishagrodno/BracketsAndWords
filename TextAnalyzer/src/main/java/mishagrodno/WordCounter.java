@@ -11,7 +11,7 @@ public class WordCounter {
     //stores bad word from notToAddWords
     private String[] badWords;
     //stores all words from given text file and its amount in text
-    private HashMap<String,Integer> wordCount;
+    private Map<String,Integer> wordCount;
 
     public WordCounter(){
         wordCount = new HashMap<>();
@@ -19,6 +19,11 @@ public class WordCounter {
         //add bad words to wordCount with amount = -1
         for (String badWord : badWords)
             wordCount.put(badWord, -1);
+    }
+
+    public void topTenWords(String fileName){
+        readWordsFromFile(fileName);
+        sort();
     }
 
     //loading words that we shouldn't count
@@ -47,6 +52,8 @@ public class WordCounter {
             String line;
             //reading by line
             while((line = bufferedReader.readLine())!=null){
+                //lowercase line
+                line = line.toLowerCase();
                 //delete punctuation
                 String lineWithoutPunctuation = removePunctuation(line);
                 //add words from line
@@ -66,12 +73,15 @@ public class WordCounter {
             //symbols ' and - are not delete< because they can be inside words
             if(Character.isAlphabetic(c) || Character.isSpaceChar(c) || c=='\'' || c=='-')
                 result.append(c);
+            else result.append(' ');
         }
-        return result.toString();
+        //delete multiple spaces
+        return result.toString().replaceAll("\\s+"," ");
     }
 
 
     private void wordsFromLine(String line){
+        if(line.isEmpty()) return;
         String[] words =  line.split(" ");
         for (String word : words) {
             // we didn't delete dashes in removePunctuation
@@ -89,6 +99,32 @@ public class WordCounter {
         }
     }
 
+    private void sort(){
+        Set<Map.Entry<String,Integer>> mapEntries = wordCount.entrySet();
+        List<Map.Entry<String,Integer>> aList = new LinkedList<>(mapEntries);
+        Collections.sort(aList, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+        wordCount = new LinkedHashMap<>();
+        for(Map.Entry<String,Integer> entry: aList)
+            wordCount.put(entry.getKey(), entry.getValue());
+        // number of words to return
+        int countOfWords = 10;
+        for(Map.Entry<String,Integer> entry: aList){
+            if(countOfWords==0) break;
+            if(entry.getValue()==-1) continue;
+            System.out.println(entry.getKey() + " - " + entry.getValue());
+            countOfWords--;
+        }
+    }
+
+    public static void main(String args[]){
+        WordCounter wordCounter = new WordCounter();
+        wordCounter.topTenWords("D:\\IdeaProjects\\sources\\WordCounter\\text.txt");
+    }
 
 
 }
