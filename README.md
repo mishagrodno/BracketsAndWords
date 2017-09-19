@@ -11,7 +11,7 @@ This project implements two tasks:
 
 1) Download and install [Apache Maven](http://www.apache-maven.ru/install.html)
 
-2) Open [Brackets and words](https://github.com/mishagrodno/BracketsAndWords) then click "Clone or download" and download zip
+2) Download and install [msysgit](https://git-for-windows.github.io) and clone [Words and brackets](https://github.com/mishagrodno/BracketsAndWords)
 
 3) Open \BracketsAndWords\TextAnalyzer 
 
