@@ -8,17 +8,19 @@ import java.util.*;
 
 public class WordCounter {
     // properties file, which stores what words we shouldn't add
-    private static String notToAddWords = "src/main/resources/WordsNotToAddInTop.properties";
+    private static String blackList = "src/main/resources/WordsNotToAddInTop.properties";
     //stores bad word from notToAddWords
     private String[] badWords;
     //stores all words from given text file and its amount in text
     //and bad words with amount -1
-    private Map<String,Integer> wordCount;
+    private Map<String,Integer> wordCount = new HashMap<>();
     // number of words to return
     private int countOfWords = 10;
+    //true - successfully loaded blackList, else false
+    private boolean isBlackListExists;
 
     public WordCounter(){
-        wordCount = new HashMap<>();
+        loadBadWords();
     }
 
     //return list of words and their amount in text
@@ -42,15 +44,19 @@ public class WordCounter {
         return topWords;
     }
 
+    public boolean isBlackListLoaded(){
+      return isBlackListExists;
+    }
+
     //loading words that we shouldn't count
-    public void LoadBadWords() throws ResourceFileNotFoundException{
+    private void loadBadWords(){
         //loading words from notToAddWords
         FileInputStream fileInputStream;
         Properties property = new Properties();
 
         try{
             // try to load property
-            fileInputStream = new FileInputStream(notToAddWords);
+            fileInputStream = new FileInputStream(blackList);
             property.load(fileInputStream);
             //words contains all bad words from file notToAddWords
             String words = property.getProperty("notToAdd");
@@ -59,9 +65,10 @@ public class WordCounter {
             //add bad words to wordCount with amount = -1
             for (String badWord : badWords)
                 wordCount.put(badWord, -1);
+            isBlackListExists = true;
         }
         catch (Exception e){
-            throw new ResourceFileNotFoundException("File not found " + notToAddWords);
+            isBlackListExists = false;
         }
     }
 

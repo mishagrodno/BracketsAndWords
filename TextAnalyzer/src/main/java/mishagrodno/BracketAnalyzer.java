@@ -24,8 +24,7 @@ public class BracketAnalyzer {
     // input: fileName - way to the text file
     // return correct if Bracket sequence is correct
     // else return incorrect
-
-    public String Analyzer(String fileName) throws FileNotFoundException{
+    public String analyzer(String fileName) throws FileNotFoundException{
         //Reading file
         BufferedReader bufferedReader;
         try {
@@ -59,7 +58,6 @@ public class BracketAnalyzer {
     // input: symbol - next character from file
     // if symbol makes Bracket sequence incorrect return -1
     // else return 0
-
     private int newSymbol(char symbol){
         if(symbol =='(' || symbol =='[' || symbol == '{'){
             openingBrackets.push(symbol);
@@ -75,7 +73,6 @@ public class BracketAnalyzer {
     // input: bracket1 - opening bracket from openingBrackets, bracket2 - closing bracket
     // if brackets make pair return true
     // else return false
-
     private boolean isBracketPair(char bracket1, char bracket2) {
         return (bracket1 == '(' && bracket2 == ')') || (bracket1 == '[' && bracket2 == ']') || (bracket1 == '{' && bracket2 == '}');
     }

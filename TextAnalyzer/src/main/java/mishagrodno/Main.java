@@ -8,42 +8,26 @@ import java.util.Scanner;
 public class Main {
 
     //Count words in file
-    private WordCounter wordCounter;
+    private WordCounter wordCounter = new WordCounter();
     //Check bracket sequence
-    private BracketAnalyzer bracketAnalyzer;
+    private BracketAnalyzer bracketAnalyzer = new BracketAnalyzer();
     //read from console
-    private Scanner in;
+    private Scanner in = new Scanner(System.in);
     //true - file with bad words exists, else false
     //if file not exist we consider, there are no bad words
-    private boolean fileResourcesFound = true;
-
-    public Main(){
-        //initialization
-        bracketAnalyzer = new BracketAnalyzer();
-        in = new Scanner(System.in);
-        wordCounter = new WordCounter();
-        //try to load bad words
-        try{
-            wordCounter.LoadBadWords();
-        }
-        catch (ResourceFileNotFoundException e){
-            //if file not exist
-            fileResourcesFound = false;
-        }
-    }
 
     public static void main(String args[]){
         Main main = new Main();
-        main.dialog();
+        main.runApplication();
     }
 
-    private void dialog() {
+    private void runApplication() {
         while (true) {
             System.out.println("-------------------------------------------");
             System.out.println("Choose command:");
             System.out.println("1 - The most frequent words from text file");
             //if file not exist, say about it
-            if(!fileResourcesFound) System.out.println("Warning: file src/main/resources/WordsNotToAddInTop.properties not found");
+            if(wordCounter.isBlackListLoaded()) System.out.println("Warning: blacklist not found");
             System.out.println("2 - Analyze bracket sequence from text file");
             System.out.println("3 - Stop");
             System.out.println("-------------------------------------------");
@@ -56,7 +40,7 @@ public class Main {
                 switch (ans) {
                     case 1: countWords();
                     break;
-                    case 2: AnalyzeBrackets();
+                    case 2: analyzeBrackets();
                     break;
                     case 3: return;
                     default:System.out.println("Unknown command");
@@ -70,7 +54,7 @@ public class Main {
     private void countWords(){
         System.out.println("-------------------------------------------");
         System.out.println("The most frequent words from text file");
-        if(!fileResourcesFound) System.out.println("Warning: file src/main/resources/WordsNotToAddInTo.properties not found");
+        if(!wordCounter.isBlackListLoaded()) System.out.println("Warning: blacklist not found");
         System.out.println("-------------------------------------------");
         System.out.println("Add file location: ");
         String fileName = in.next();
@@ -88,7 +72,7 @@ public class Main {
     }
 
     //work with bracketAnalyzer
-    private void AnalyzeBrackets(){
+    private void analyzeBrackets(){
         System.out.println("-------------------------------------------");
         System.out.println("Analyze bracket sequence from text file");
         System.out.println("-------------------------------------------");
@@ -96,7 +80,7 @@ public class Main {
         String fileName = in.next();
         String result;
         try {
-            result = bracketAnalyzer.Analyzer(fileName);
+            result = bracketAnalyzer.analyzer(fileName);
             System.out.println("Bracket sequence is " + result);
         }
         catch (Exception e){
