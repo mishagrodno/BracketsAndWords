@@ -17,13 +17,8 @@ public class WordCounter {
     // number of words to return
     private int countOfWords = 10;
 
-    public WordCounter() throws ResourceFileNotFoundException{
+    public WordCounter(){
         wordCount = new HashMap<>();
-        //initialization badWords
-        LoadBadWords();
-        //add bad words to wordCount with amount = -1
-        for (String badWord : badWords)
-            wordCount.put(badWord, -1);
     }
 
     //return list of words and their amount in text
@@ -48,7 +43,7 @@ public class WordCounter {
     }
 
     //loading words that we shouldn't count
-    private void LoadBadWords() throws ResourceFileNotFoundException{
+    public void LoadBadWords() throws ResourceFileNotFoundException{
         //loading words from notToAddWords
         FileInputStream fileInputStream;
         Properties property = new Properties();
@@ -61,6 +56,9 @@ public class WordCounter {
             String words = property.getProperty("notToAdd");
             //fill in badWords with bad words
             badWords = words.split(",");
+            //add bad words to wordCount with amount = -1
+            for (String badWord : badWords)
+                wordCount.put(badWord, -1);
         }
         catch (Exception e){
             throw new ResourceFileNotFoundException("File not found " + notToAddWords);
