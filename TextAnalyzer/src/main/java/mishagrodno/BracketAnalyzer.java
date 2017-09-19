@@ -1,6 +1,7 @@
 package mishagrodno;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Stack;
 
@@ -24,7 +25,7 @@ public class BracketAnalyzer {
     // return correct if Bracket sequence is correct
     // else return incorrect
 
-    public String Analyzer(String fileName){
+    public String Analyzer(String fileName) throws FileNotFoundException{
         //Reading file
         BufferedReader bufferedReader;
         try {
@@ -50,7 +51,7 @@ public class BracketAnalyzer {
             else return "incorrect";
         }
         catch (Exception e){
-            return "File not found";
+            throw new FileNotFoundException(fileName);
         }
     }
 

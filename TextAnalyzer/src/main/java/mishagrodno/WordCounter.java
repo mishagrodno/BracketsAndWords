@@ -2,6 +2,7 @@ package mishagrodno;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
 
@@ -16,7 +17,7 @@ public class WordCounter {
     // number of words to return
     private int countOfWords = 10;
 
-    public WordCounter(){
+    public WordCounter() throws ResourceFileNotFoundException{
         wordCount = new HashMap<>();
         //initialization badWords
         LoadBadWords();
@@ -26,7 +27,7 @@ public class WordCounter {
     }
 
     //return list of words and their amount in text
-    public List<Map.Entry<String,Integer>> topWords(String fileName){
+    public List<Map.Entry<String,Integer>> topWords(String fileName) throws FileNotFoundException{
         //add words
         readWordsFromFile(fileName);
         //sort by amount
@@ -47,7 +48,7 @@ public class WordCounter {
     }
 
     //loading words that we shouldn't count
-    private void LoadBadWords(){
+    private void LoadBadWords() throws ResourceFileNotFoundException{
         //loading words from notToAddWords
         FileInputStream fileInputStream;
         Properties property = new Properties();
@@ -62,11 +63,11 @@ public class WordCounter {
             badWords = words.split(",");
         }
         catch (Exception e){
-            System.out.println("File not found " + notToAddWords);
+            throw new ResourceFileNotFoundException("File not found " + notToAddWords);
         }
     }
 
-    private void readWordsFromFile(String fileName){
+    private void readWordsFromFile(String fileName) throws FileNotFoundException{
         BufferedReader bufferedReader;
         try {
             bufferedReader = new BufferedReader(new FileReader(fileName));
@@ -82,7 +83,7 @@ public class WordCounter {
             }
         }
         catch (Exception e){
-            System.out.println("File not found " + fileName);
+            throw new FileNotFoundException("File not found " + fileName);
         }
     }
 
