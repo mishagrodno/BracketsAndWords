@@ -18,6 +18,7 @@ This project implements two tasks:
 4) On command line, type in the following commands:
  
     $ mvn clean package
+    
     $ mvn exec:java
  
 6) Ready for use
