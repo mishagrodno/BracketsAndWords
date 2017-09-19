@@ -27,7 +27,7 @@ public class Main {
             System.out.println("Choose command:");
             System.out.println("1 - The most frequent words from text file");
             //if file not exist, say about it
-            if(wordCounter.isBlackListLoaded()) System.out.println("Warning: blacklist not found");
+            if(!wordCounter.isBlackListLoaded()) System.out.println("Warning: blacklist not found");
             System.out.println("2 - Analyze bracket sequence from text file");
             System.out.println("3 - Stop");
             System.out.println("-------------------------------------------");
