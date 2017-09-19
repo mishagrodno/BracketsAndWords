@@ -11,23 +11,44 @@ public class WordCounter {
     //stores bad word from notToAddWords
     private String[] badWords;
     //stores all words from given text file and its amount in text
+    //and bad words with amount -1
     private Map<String,Integer> wordCount;
+    // number of words to return
+    private int countOfWords = 10;
 
     public WordCounter(){
         wordCount = new HashMap<>();
+        //initialization badWords
         LoadBadWords();
         //add bad words to wordCount with amount = -1
         for (String badWord : badWords)
             wordCount.put(badWord, -1);
     }
 
-    public void topTenWords(String fileName){
+    //return list of words and their amount in text
+    public List<Map.Entry<String,Integer>> topWords(String fileName){
+        //add words
         readWordsFromFile(fileName);
+        //sort by amount
         sort();
+        //list entry to return
+        List<Map.Entry<String,Integer>> topWords = new LinkedList<>();
+        //i - count of words to return
+        int i = countOfWords;
+        for(Map.Entry<String,Integer> entry: wordCount.entrySet()){
+            //if entry.value()=-1 it means that the words from badWords began
+            if(entry.getValue()==-1 || i==0) break;
+            //add word to result
+            topWords.add(entry);
+            //decrease count of word to return
+            i--;
+        }
+        return topWords;
     }
 
     //loading words that we shouldn't count
     private void LoadBadWords(){
+        //loading words from notToAddWords
         FileInputStream fileInputStream;
         Properties property = new Properties();
 
@@ -69,22 +90,24 @@ public class WordCounter {
     private String removePunctuation(String str){
         StringBuilder result = new StringBuilder();
         for(int i=0;i<str.length();i++){
-            char c = str.charAt(i);
-            //symbols ' and - are not delete< because they can be inside words
-            if(Character.isAlphabetic(c) || Character.isSpaceChar(c) || c=='\'' || c=='-')
-                result.append(c);
+            char currSymbol = str.charAt(i);
+            //symbols ' and - are not delete, because they can be inside words
+            if(Character.isAlphabetic(currSymbol) || Character.isSpaceChar(currSymbol) || currSymbol=='\'' || currSymbol=='-')
+                result.append(currSymbol);
             else result.append(' ');
         }
         //delete multiple spaces
         return result.toString().replaceAll("\\s+"," ");
     }
 
-
+    // add words from line to wordCount
     private void wordsFromLine(String line){
+        //not add empty lines
         if(line.isEmpty()) return;
+        //divide line into words
         String[] words =  line.split(" ");
         for (String word : words) {
-            // we didn't delete dashes in removePunctuation
+            // we didn't delete dashes in removePunctuation, so do it now
             if (Objects.equals(word, "-")) continue;
             //if we've already put such word, increase count, else put word
             if (wordCount.containsKey(word)) {
@@ -99,32 +122,13 @@ public class WordCounter {
         }
     }
 
+    //sorting wordCount id descending order
     private void sort(){
         Set<Map.Entry<String,Integer>> mapEntries = wordCount.entrySet();
         List<Map.Entry<String,Integer>> aList = new LinkedList<>(mapEntries);
-        Collections.sort(aList, new Comparator<Map.Entry<String, Integer>>() {
-            @Override
-            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-                return o2.getValue().compareTo(o1.getValue());
-            }
-        });
+        Collections.sort(aList, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
         wordCount = new LinkedHashMap<>();
         for(Map.Entry<String,Integer> entry: aList)
             wordCount.put(entry.getKey(), entry.getValue());
-        // number of words to return
-        int countOfWords = 10;
-        for(Map.Entry<String,Integer> entry: aList){
-            if(countOfWords==0) break;
-            if(entry.getValue()==-1) continue;
-            System.out.println(entry.getKey() + " - " + entry.getValue());
-            countOfWords--;
-        }
     }
-
-    public static void main(String args[]){
-        WordCounter wordCounter = new WordCounter();
-        wordCounter.topTenWords("D:\\IdeaProjects\\sources\\WordCounter\\text.txt");
-    }
-
-
 }
