@@ -11,9 +11,9 @@ This project implements two tasks:
 
 1) Download and install [Apache Maven](http://www.apache-maven.ru/install.html)
 
-2) Download and install [Far Manager](http://www.farmanager.com/download.php?l=ru) or other console manager
+2) Open [Brackets and words](https://github.com/mishagrodno/BracketsAndWords) then click "Clone or download" and download zip
 
-3) Open \BracketsAndWords\TextAnalyzer in console manager
+3) Open \BracketsAndWords\TextAnalyzer 
 
 4) On command line, type in the following commands:
  
@@ -24,7 +24,7 @@ This project implements two tasks:
 6) Ready for use
 
 To change words in blacklist, add them to \BracketsAndWords\TextAnalyzer\src\main\resources\WordsNotToAddInTop.properties 
-seperated by commas without spaces.
+seperated by commas without spaces. Repeat items 3 and 4.
 
 ## HOW TO USE?
 
