@@ -1,8 +1,6 @@
 # **BRACKETS AND WORDS**
-========================
 
 ## WHAT IS IT?
------------
 
 This project implements two tasks: 
  1) Search the most frequent words in the text file, without taking into account words from blacklist
@@ -10,7 +8,6 @@ This project implements two tasks:
  2) Check bracket sequence from text file for correctness
 
 ## INSTALLATION
------------
 
 1) Download and install [Apache Maven](http://www.apache-maven.ru/install.html)
 
@@ -29,7 +26,6 @@ To change words in blacklist, add them to \BracketsAndWords\TextAnalyzer\src\mai
 seperated by commas without spaces.
 
 ## HOW TO USE?
--------------
 
 There is a simple interface with 3 commands:
  1) The most frequent words from text file - search the most frequent words from your text file, without taking into
@@ -43,6 +39,5 @@ There is a simple interface with 3 commands:
  3) Stop - stop program
 
 ## CONTACTS
-----------
 
 mishagrodno@mail.ru
